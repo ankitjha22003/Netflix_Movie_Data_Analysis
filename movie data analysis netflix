@@ -1,0 +1,2173 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "id": "23d0ef86-e292-438e-a9ae-4cad3b6d36f0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import numpy as np\n",
+    "import pandas as pd \n",
+    "import matplotlib.pyplot as plt \n",
+    "import seaborn as sns "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "id": "31dd84b4-cc1a-4aa2-8eb5-642ae69303a6",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df = pd.read_csv(\"mymoviedb.csv\",lineterminator = '\\n') # line badalane ke liye hm use krte lineterminator ka \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "67fbfce3-3893-4d8b-9840-27b30bdccef9",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Overview</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Original_Language</th>\n",
+       "      <th>Genre</th>\n",
+       "      <th>Poster_Url</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021-12-15</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>Peter Parker is unmasked and no longer able to...</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>8.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/1g0dhYtq4i...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022-03-01</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>In his second year of fighting crime, Batman u...</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>8.1</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/74xTEgt7R3...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022-02-25</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>Stranded at a rest stop in the mountains durin...</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>6.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/vDHsLnOWKl...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021-11-24</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>The tale of an extraordinary family, the Madri...</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>7.7</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/4j0PNHkMr5...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021-12-22</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>As a collection of history's worst tyrants and...</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Release_Date                    Title  \\\n",
+       "0   2021-12-15  Spider-Man: No Way Home   \n",
+       "1   2022-03-01               The Batman   \n",
+       "2   2022-02-25                  No Exit   \n",
+       "3   2021-11-24                  Encanto   \n",
+       "4   2021-12-22           The King's Man   \n",
+       "\n",
+       "                                            Overview  Popularity  Vote_Count  \\\n",
+       "0  Peter Parker is unmasked and no longer able to...    5083.954        8940   \n",
+       "1  In his second year of fighting crime, Batman u...    3827.658        1151   \n",
+       "2  Stranded at a rest stop in the mountains durin...    2618.087         122   \n",
+       "3  The tale of an extraordinary family, the Madri...    2402.201        5076   \n",
+       "4  As a collection of history's worst tyrants and...    1895.511        1793   \n",
+       "\n",
+       "   Vote_Average Original_Language                               Genre  \\\n",
+       "0           8.3                en  Action, Adventure, Science Fiction   \n",
+       "1           8.1                en            Crime, Mystery, Thriller   \n",
+       "2           6.3                en                            Thriller   \n",
+       "3           7.7                en  Animation, Comedy, Family, Fantasy   \n",
+       "4           7.0                en    Action, Adventure, Thriller, War   \n",
+       "\n",
+       "                                          Poster_Url  \n",
+       "0  https://image.tmdb.org/t/p/original/1g0dhYtq4i...  \n",
+       "1  https://image.tmdb.org/t/p/original/74xTEgt7R3...  \n",
+       "2  https://image.tmdb.org/t/p/original/vDHsLnOWKl...  \n",
+       "3  https://image.tmdb.org/t/p/original/4j0PNHkMr5...  \n",
+       "4  https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...  "
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head() # starting ka 5 data "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 4,
+   "id": "74265793-3280-4dd8-8560-ee360cc21d39",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 9827 entries, 0 to 9826\n",
+      "Data columns (total 9 columns):\n",
+      " #   Column             Non-Null Count  Dtype  \n",
+      "---  ------             --------------  -----  \n",
+      " 0   Release_Date       9827 non-null   object \n",
+      " 1   Title              9827 non-null   object \n",
+      " 2   Overview           9827 non-null   object \n",
+      " 3   Popularity         9827 non-null   float64\n",
+      " 4   Vote_Count         9827 non-null   int64  \n",
+      " 5   Vote_Average       9827 non-null   float64\n",
+      " 6   Original_Language  9827 non-null   object \n",
+      " 7   Genre              9827 non-null   object \n",
+      " 8   Poster_Url         9827 non-null   object \n",
+      "dtypes: float64(2), int64(1), object(6)\n",
+      "memory usage: 691.1+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "id": "c597a5f5-f5c8-42f3-9262-f1ff73de55f9",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# realse date ka datatype hmko badalna padeg usko date-time format me lana padega \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "id": "15457289-a549-493b-abda-b425bfc1f32e",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "0    Action, Adventure, Science Fiction\n",
+       "1              Crime, Mystery, Thriller\n",
+       "2                              Thriller\n",
+       "3    Animation, Comedy, Family, Fantasy\n",
+       "4      Action, Adventure, Thriller, War\n",
+       "Name: Genre, dtype: object"
+      ]
+     },
+     "execution_count": 6,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Genre'].head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "id": "97f51e24-81a4-46cc-a228-78c0db58a033",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# white space ko v hme hatana pd skata hai \n",
+    "# duplicate data v hm check krenge "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 8,
+   "id": "7bc786df-6c4f-4c3b-9ba4-090de27f06f7",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "np.int64(0)"
+      ]
+     },
+     "execution_count": 8,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.duplicated().sum()\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 9,
+   "id": "46750e34-3619-4c04-83af-d407dd83c669",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>count</th>\n",
+       "      <td>9827.000000</td>\n",
+       "      <td>9827.000000</td>\n",
+       "      <td>9827.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>mean</th>\n",
+       "      <td>40.326088</td>\n",
+       "      <td>1392.805536</td>\n",
+       "      <td>6.439534</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>std</th>\n",
+       "      <td>108.873998</td>\n",
+       "      <td>2611.206907</td>\n",
+       "      <td>1.129759</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>min</th>\n",
+       "      <td>13.354000</td>\n",
+       "      <td>0.000000</td>\n",
+       "      <td>0.000000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25%</th>\n",
+       "      <td>16.128500</td>\n",
+       "      <td>146.000000</td>\n",
+       "      <td>5.900000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>50%</th>\n",
+       "      <td>21.199000</td>\n",
+       "      <td>444.000000</td>\n",
+       "      <td>6.500000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>75%</th>\n",
+       "      <td>35.191500</td>\n",
+       "      <td>1376.000000</td>\n",
+       "      <td>7.100000</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>max</th>\n",
+       "      <td>5083.954000</td>\n",
+       "      <td>31077.000000</td>\n",
+       "      <td>10.000000</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "        Popularity    Vote_Count  Vote_Average\n",
+       "count  9827.000000   9827.000000   9827.000000\n",
+       "mean     40.326088   1392.805536      6.439534\n",
+       "std     108.873998   2611.206907      1.129759\n",
+       "min      13.354000      0.000000      0.000000\n",
+       "25%      16.128500    146.000000      5.900000\n",
+       "50%      21.199000    444.000000      6.500000\n",
+       "75%      35.191500   1376.000000      7.100000\n",
+       "max    5083.954000  31077.000000     10.000000"
+      ]
+     },
+     "execution_count": 9,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.describe() # basis statatics dikha deta hai "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "id": "0a1c513a-ff59-44b3-bc67-e9db5110e026",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# Exploration Summary\n",
+    "\n",
+    "# we have a dataframe consisting of 9827 rows and 9 coloumns.\n",
+    "# our dataset looks a bit tidy with no NaNs nor duplicated values \n",
+    "# Release_Date column needs to be casted into date time and to extract only the year value \n",
+    "# overview, original_languages and poster-url wouldn't be so useful during analysis,so we'll drop them\n",
+    "# there is noticable outliers in popularity column \n",
+    "# vote_average better be categorised for proper analysis \n",
+    "# Genre column has comma separated values and white spaces that needs to be handled and casted into category .Exploration summary \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "id": "79a4a1af-8e83-4c3c-90b5-bbb4d54519af",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Overview</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Original_Language</th>\n",
+       "      <th>Genre</th>\n",
+       "      <th>Poster_Url</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021-12-15</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>Peter Parker is unmasked and no longer able to...</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>8.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/1g0dhYtq4i...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022-03-01</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>In his second year of fighting crime, Batman u...</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>8.1</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/74xTEgt7R3...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022-02-25</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>Stranded at a rest stop in the mountains durin...</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>6.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/vDHsLnOWKl...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021-11-24</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>The tale of an extraordinary family, the Madri...</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>7.7</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/4j0PNHkMr5...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021-12-22</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>As a collection of history's worst tyrants and...</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "  Release_Date                    Title  \\\n",
+       "0   2021-12-15  Spider-Man: No Way Home   \n",
+       "1   2022-03-01               The Batman   \n",
+       "2   2022-02-25                  No Exit   \n",
+       "3   2021-11-24                  Encanto   \n",
+       "4   2021-12-22           The King's Man   \n",
+       "\n",
+       "                                            Overview  Popularity  Vote_Count  \\\n",
+       "0  Peter Parker is unmasked and no longer able to...    5083.954        8940   \n",
+       "1  In his second year of fighting crime, Batman u...    3827.658        1151   \n",
+       "2  Stranded at a rest stop in the mountains durin...    2618.087         122   \n",
+       "3  The tale of an extraordinary family, the Madri...    2402.201        5076   \n",
+       "4  As a collection of history's worst tyrants and...    1895.511        1793   \n",
+       "\n",
+       "   Vote_Average Original_Language                               Genre  \\\n",
+       "0           8.3                en  Action, Adventure, Science Fiction   \n",
+       "1           8.1                en            Crime, Mystery, Thriller   \n",
+       "2           6.3                en                            Thriller   \n",
+       "3           7.7                en  Animation, Comedy, Family, Fantasy   \n",
+       "4           7.0                en    Action, Adventure, Thriller, War   \n",
+       "\n",
+       "                                          Poster_Url  \n",
+       "0  https://image.tmdb.org/t/p/original/1g0dhYtq4i...  \n",
+       "1  https://image.tmdb.org/t/p/original/74xTEgt7R3...  \n",
+       "2  https://image.tmdb.org/t/p/original/vDHsLnOWKl...  \n",
+       "3  https://image.tmdb.org/t/p/original/4j0PNHkMr5...  \n",
+       "4  https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...  "
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 12,
+   "id": "a4438e8a-b614-4ed9-8a5a-89957ba88828",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "datetime64[ns]\n"
+     ]
+    }
+   ],
+   "source": [
+    "# realase date hmko bass year se mtlab hai hmko \n",
+    "df['Release_Date'] = pd.to_datetime(df['Release_Date'])\n",
+    "print(df['Release_Date'].dtype)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 13,
+   "id": "1dd816a4-2018-420d-89a0-317b3416cfb4",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "dtype('int32')"
+      ]
+     },
+     "execution_count": 13,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Release_Date'] = df['Release_Date'].dt.year\n",
+    "df['Release_Date'].dtypes"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "id": "e8597383-e652-4072-be84-f215d4a2b1ce",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Overview</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Original_Language</th>\n",
+       "      <th>Genre</th>\n",
+       "      <th>Poster_Url</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>Peter Parker is unmasked and no longer able to...</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>8.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/1g0dhYtq4i...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>In his second year of fighting crime, Batman u...</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>8.1</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/74xTEgt7R3...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>Stranded at a rest stop in the mountains durin...</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>6.3</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Thriller</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/vDHsLnOWKl...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>The tale of an extraordinary family, the Madri...</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>7.7</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/4j0PNHkMr5...</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>As a collection of history's worst tyrants and...</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>en</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "      <td>https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  \\\n",
+       "0          2021  Spider-Man: No Way Home   \n",
+       "1          2022               The Batman   \n",
+       "2          2022                  No Exit   \n",
+       "3          2021                  Encanto   \n",
+       "4          2021           The King's Man   \n",
+       "\n",
+       "                                            Overview  Popularity  Vote_Count  \\\n",
+       "0  Peter Parker is unmasked and no longer able to...    5083.954        8940   \n",
+       "1  In his second year of fighting crime, Batman u...    3827.658        1151   \n",
+       "2  Stranded at a rest stop in the mountains durin...    2618.087         122   \n",
+       "3  The tale of an extraordinary family, the Madri...    2402.201        5076   \n",
+       "4  As a collection of history's worst tyrants and...    1895.511        1793   \n",
+       "\n",
+       "   Vote_Average Original_Language                               Genre  \\\n",
+       "0           8.3                en  Action, Adventure, Science Fiction   \n",
+       "1           8.1                en            Crime, Mystery, Thriller   \n",
+       "2           6.3                en                            Thriller   \n",
+       "3           7.7                en  Animation, Comedy, Family, Fantasy   \n",
+       "4           7.0                en    Action, Adventure, Thriller, War   \n",
+       "\n",
+       "                                          Poster_Url  \n",
+       "0  https://image.tmdb.org/t/p/original/1g0dhYtq4i...  \n",
+       "1  https://image.tmdb.org/t/p/original/74xTEgt7R3...  \n",
+       "2  https://image.tmdb.org/t/p/original/vDHsLnOWKl...  \n",
+       "3  https://image.tmdb.org/t/p/original/4j0PNHkMr5...  \n",
+       "4  https://image.tmdb.org/t/p/original/aq4Pwv5Xeu...  "
+      ]
+     },
+     "execution_count": 14,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head() # jb bas year aa rha hai toh iska datatype hoga integers "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "id": "40c7a132-f3ef-46cf-9342-23edff2efe90",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# dropping the column \n",
+    "cols = ['Overview','Original_Language','Poster_Url']"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "id": "db407756-f0c0-45ab-8e18-99d5cb0090b0",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "df.drop(cols,axis = 1, inplace = True)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 17,
+   "id": "447974c3-6049-40fc-93e6-a8367dc20121",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Index(['Release_Date', 'Title', 'Popularity', 'Vote_Count', 'Vote_Average',\n",
+       "       'Genre'],\n",
+       "      dtype='object')"
+      ]
+     },
+     "execution_count": 17,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.columns"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "id": "dc1bef0d-2cfc-413a-bcaa-8987e169bc2a",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>8.3</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>8.1</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>6.3</td>\n",
+       "      <td>Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>7.7</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>7.0</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940   \n",
+       "1          2022               The Batman    3827.658        1151   \n",
+       "2          2022                  No Exit    2618.087         122   \n",
+       "3          2021                  Encanto    2402.201        5076   \n",
+       "4          2021           The King's Man    1895.511        1793   \n",
+       "\n",
+       "   Vote_Average                               Genre  \n",
+       "0           8.3  Action, Adventure, Science Fiction  \n",
+       "1           8.1            Crime, Mystery, Thriller  \n",
+       "2           6.3                            Thriller  \n",
+       "3           7.7  Animation, Comedy, Family, Fantasy  \n",
+       "4           7.0    Action, Adventure, Thriller, War  "
+      ]
+     },
+     "execution_count": 18,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 19,
+   "id": "be3c1346-a1cf-403f-bc04-4d6269a6ac67",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# categorizing Vote_Average column  we would cut the vote_average values and make 4 categories popular , average,below_avg ,not_popular to describe it more\n",
+    "# using catigorize_col() function provided above "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "id": "6742ace7-96de-4962-b8a4-0978ce36c946",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def catigorize_col(df, col, labels):\n",
+    "    edges = [df[col].describe()['min'],\n",
+    "    df[col].describe()['25%'],\n",
+    "    df[col].describe()['50%'],\n",
+    "    df[col].describe()['75%'],\n",
+    "    df[col].describe()['max']]\n",
+    "    df[col] = pd.cut(df[col],edges,labels = labels, duplicates = 'drop')\n",
+    "    return df \n",
+    "             "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "id": "f90b4e10-fe03-4bab-9630-a89fa14c33ec",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "['popular', 'below_avg', 'average', 'not_popular', NaN]\n",
+       "Categories (4, object): ['not_popular' < 'below_avg' < 'average' < 'popular']"
+      ]
+     },
+     "execution_count": 21,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "labels = ['not_popular', 'below_avg', 'average', 'popular']\n",
+    "catigorize_col(df,'Vote_Average',labels)\n",
+    "df['Vote_Average'].unique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "id": "d9df346e-22da-4d4d-bca4-34b4cbf68d75",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>below_avg</td>\n",
+       "      <td>Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>average</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2022               The Batman    3827.658        1151      popular   \n",
+       "2          2022                  No Exit    2618.087         122    below_avg   \n",
+       "3          2021                  Encanto    2402.201        5076      popular   \n",
+       "4          2021           The King's Man    1895.511        1793      average   \n",
+       "\n",
+       "                                Genre  \n",
+       "0  Action, Adventure, Science Fiction  \n",
+       "1            Crime, Mystery, Thriller  \n",
+       "2                            Thriller  \n",
+       "3  Animation, Comedy, Family, Fantasy  \n",
+       "4    Action, Adventure, Thriller, War  "
+      ]
+     },
+     "execution_count": 22,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "id": "33ca4bbb-af7e-4bfc-ba71-07483316d26c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "<bound method IndexOpsMixin.value_counts of 0           popular\n",
+       "1           popular\n",
+       "2         below_avg\n",
+       "3           popular\n",
+       "4           average\n",
+       "           ...     \n",
+       "9822        popular\n",
+       "9823    not_popular\n",
+       "9824    not_popular\n",
+       "9825        average\n",
+       "9826        popular\n",
+       "Name: Vote_Average, Length: 9827, dtype: category\n",
+       "Categories (4, object): ['not_popular' < 'below_avg' < 'average' < 'popular']>"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Vote_Average'].value_counts"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "id": "41b3c9dd-d11a-4586-9311-135de34b1f24",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Release_Date    0\n",
+       "Title           0\n",
+       "Popularity      0\n",
+       "Vote_Count      0\n",
+       "Vote_Average    0\n",
+       "Genre           0\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 24,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.dropna(inplace = True)\n",
+    "df.isna().sum()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "id": "6786d29d-08e1-4a9c-888e-95a5a0670b3c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action, Adventure, Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime, Mystery, Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>No Exit</td>\n",
+       "      <td>2618.087</td>\n",
+       "      <td>122</td>\n",
+       "      <td>below_avg</td>\n",
+       "      <td>Thriller</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Encanto</td>\n",
+       "      <td>2402.201</td>\n",
+       "      <td>5076</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Animation, Comedy, Family, Fantasy</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The King's Man</td>\n",
+       "      <td>1895.511</td>\n",
+       "      <td>1793</td>\n",
+       "      <td>average</td>\n",
+       "      <td>Action, Adventure, Thriller, War</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2022               The Batman    3827.658        1151      popular   \n",
+       "2          2022                  No Exit    2618.087         122    below_avg   \n",
+       "3          2021                  Encanto    2402.201        5076      popular   \n",
+       "4          2021           The King's Man    1895.511        1793      average   \n",
+       "\n",
+       "                                Genre  \n",
+       "0  Action, Adventure, Science Fiction  \n",
+       "1            Crime, Mystery, Thriller  \n",
+       "2                            Thriller  \n",
+       "3  Animation, Comedy, Family, Fantasy  \n",
+       "4    Action, Adventure, Thriller, War  "
+      ]
+     },
+     "execution_count": 25,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 26,
+   "id": "a1c88b98-c13a-4c4f-bc83-735e398d7e9c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# white spaces ko ab hm remove krenge \n",
+    "# we'd split genres into a list and then explode our datafrmae to have only one genre per row for each movie \n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "id": "ce9afbce-8c08-4794-a382-7cc1e412b49d",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Mystery</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "2          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "3          2022               The Batman    3827.658        1151      popular   \n",
+       "4          2022               The Batman    3827.658        1151      popular   \n",
+       "\n",
+       "             Genre  \n",
+       "0           Action  \n",
+       "1        Adventure  \n",
+       "2  Science Fiction  \n",
+       "3            Crime  \n",
+       "4          Mystery  "
+      ]
+     },
+     "execution_count": 27,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Genre'] = df['Genre'].str.split(', ')\n",
+    "df = df.explode('Genre').reset_index(drop = True)\n",
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 28,
+   "id": "62e10999-5f92-4d4a-bf64-ddead22fe649",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "CategoricalDtype(categories=['Action', 'Adventure', 'Animation', 'Comedy', 'Crime',\n",
+       "                  'Documentary', 'Drama', 'Family', 'Fantasy', 'History',\n",
+       "                  'Horror', 'Music', 'Mystery', 'Romance', 'Science Fiction',\n",
+       "                  'TV Movie', 'Thriller', 'War', 'Western'],\n",
+       ", ordered=False, categories_dtype=object)"
+      ]
+     },
+     "execution_count": 28,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# casting column into a category \n",
+    "df['Genre'] = df['Genre'].astype('category')\n",
+    "df['Genre'].dtypes\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 29,
+   "id": "e35f546a-77ff-4901-b7d1-0f55bdb9551f",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "<class 'pandas.core.frame.DataFrame'>\n",
+      "RangeIndex: 25552 entries, 0 to 25551\n",
+      "Data columns (total 6 columns):\n",
+      " #   Column        Non-Null Count  Dtype   \n",
+      "---  ------        --------------  -----   \n",
+      " 0   Release_Date  25552 non-null  int32   \n",
+      " 1   Title         25552 non-null  object  \n",
+      " 2   Popularity    25552 non-null  float64 \n",
+      " 3   Vote_Count    25552 non-null  int64   \n",
+      " 4   Vote_Average  25552 non-null  category\n",
+      " 5   Genre         25552 non-null  category\n",
+      "dtypes: category(2), float64(1), int32(1), int64(1), object(1)\n",
+      "memory usage: 749.6+ KB\n"
+     ]
+    }
+   ],
+   "source": [
+    "df.info()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 30,
+   "id": "0b2b52c2-7d51-404a-a983-9cd04aba5f95",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "Release_Date     100\n",
+       "Title           9415\n",
+       "Popularity      8088\n",
+       "Vote_Count      3265\n",
+       "Vote_Average       4\n",
+       "Genre             19\n",
+       "dtype: int64"
+      ]
+     },
+     "execution_count": 30,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "# unique data \n",
+    "df.nunique()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 31,
+   "id": "6b23b38f-c720-49a1-ac3e-87f96823d58f",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Mystery</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "2          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "3          2022               The Batman    3827.658        1151      popular   \n",
+       "4          2022               The Batman    3827.658        1151      popular   \n",
+       "\n",
+       "             Genre  \n",
+       "0           Action  \n",
+       "1        Adventure  \n",
+       "2  Science Fiction  \n",
+       "3            Crime  \n",
+       "4          Mystery  "
+      ]
+     },
+     "execution_count": 31,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "d0987b8c-0016-4079-b631-01252273a13a",
+   "metadata": {},
+   "source": [
+    "# Data Visualization"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 33,
+   "id": "0b9ad9b9-17b1-4c05-a307-a032bb8ed37c",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "sns.set_style('whitegrid')"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "dee44295-1c08-4ab9-8b9e-2106c229763b",
+   "metadata": {},
+   "source": [
+    "# what is the most frequent genre of movies released on Netflix"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 34,
+   "id": "9e40c244-282f-42ad-86d0-a97dfe048846",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "count     25552\n",
+       "unique       19\n",
+       "top       Drama\n",
+       "freq       3715\n",
+       "Name: Genre, dtype: object"
+      ]
+     },
+     "execution_count": 34,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df['Genre'].describe()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 38,
+   "id": "f03f9db8-c03a-4304-a545-e2ca8525acdc",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "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N28ezs7OwJV/M23atGHmzJlMmzbNumzXrl15/vnnrXm2bNnC9u3b6dGjx23tnxQMndGL5BOz2XzN6X/99Rd16tSx+WnTpg1w5ezJYrEQGhpKdna29Sc0NJTLly/z3XffWdv55/+kAXx9fQG4ePGizfYeeOAB6+8JCQlcvHjxmu0D7Ny585qZ9+3bB2DNedW0adN466232L9/P1lZWURERNjMDwwMxM/PL19GcBuNRuvv3t7egG1xKl++PHDlS8D11nNzc8PLy4sLFy5cdzvfffcdjzzyiLXIA7Rt29Za5K4lODiYXbt20atXLxYsWMCRI0fo06cPHTt2vOl+/fPvkxfOzs60bdvW+tnd3Z3mzZvn6ma4ExcuXOCnn37iscces9n/smXLEhISkuvv+s9jDVe+2NzoWEvh0Bm9SD7x9PSkVKlSJCcn20yvXLmyzeXM999/n99++w2AM2fOAFjP0v7txIkT1t9LlixpM+9qP/+/v2BcLYr/bP/q1YJ/S01Nveb0q+tdrwviaj/8P7f1z+1nZGRcc728+OeXmqtKlChx0/X+vYzBYLjhfeNnz57Fy8vLZpqLi8sNL6s/++yzlC5dmlWrVvH2228zceJEHnjgAUaOHEnjxo1vmO9ax+xWlC9fHldXV5tpFSpUyPVF505kZGRgsVhu+e+a12MthUOFXiQftWrVim3btpGZmWktVG5ubtStW9e6zNUzUbhypgTw8ccfU7p06VztValS5Y7yXG3/3XffvWaXwvWKztX1Tp8+bb0sDvDHH39w+vRpypUrB8CpU6eoUaOGzbonT56katWq1830zzEFQKGfAZYvX55Tp07ZTLNYLDccVGgwGOjduze9e/cmLS2Nb775htmzZzNo0CB27dplc3XgVtzKMblahP95W+apU6esX1KuTv/3F7/z589f89/WtZQpUwYnJ6dcxwOu/F3/+W9X7Icu3YvkowEDBpCTk8PIkSPJysrKNf/SpUscO3bM+jkoKAiA9PR06tata/05c+YM06ZNs55Z366AgABcXV05ceKETfuurq5Mnjw516juqxo0aABcGeX9T1OnTmXcuHEEBATg5ubG+vXrbebv27ePlJQU6tevf812PTw8bAbPAXz//fe3u3v5onHjxuzYscOmCyQuLu6GDzbq0aMH48ePB66cVUdGRtK7d28yMjLIzMwEsLmz4kZu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8cUXefHFF++ojSqermSbdaHnKj8v18KOICJyR1ToxUb/MG+cnZ0LO0aRYjZbMBj00CERsU86dRMbOTk5hR0hT3Jycjh48GCB5laRFxF7pkIvdu/ixYuFHUFEpMhSoRcREXFgKvQiIiIOTIVebBTVgXhms+XmC4mISC4adS825m4+RWJa0RqQ5+flysDw6z/2V0RErk+FXmykpJs4mppd2DFERCSf6NK9iIiIA1OhL0IuX77M8ePHCzuGiIg4EBX6OxQaGkpsbGyu6bGxsYSGhpKSkoLRaCQlJeWmbfXq1Ytdu3YVREwRESmm1EdfwKpUqUJCQsItLZuenl7AaUREpLjRGX0BS0pKwt/fn6SkJACWLl1K69atCQwMJCIighUrVgDQt29fUlJSGDNmjPUd9Pv27aN3794EBgYSGhrKtGnTyMrKAmDmzJn07duXzp0707BhQ9577z0aNGjA5cuXrdv+4osvCAkJwWLRrWkiIsWVzujzQUxMDG+++abNNJPJRIUKFWymHTt2jLfeeou1a9dy//33ExcXx/PPP0+LFi2YP38+oaGhDBw4kMjISP744w+efvppXnrpJRYsWMDff//NoEGDyMzMZNSoUQDs3r2b+fPn8/DDD+Pq6sonn3zC1q1beeyxxwBYs2YNnTp1wslJz2oXESmudEafD8aMGcO+fftsfsaMGZNrOWdnZywWC8uWLeO7776jcePG7N+/n4oVK+Zadv369fj7+/Pkk0/i5ubGvffey7Bhw1ixYgVmsxmAqlWr0rhxY0qXLo2bmxvt27dn7dq1AKSlpfHtt9/SqVOngt15EREp0lTo76IqVaqwaNEikpOTiY6OpmHDhrz55ps2l9uvSktLo2rVqjbT7rnnHi5dukRaWhpAri8IkZGRfPvtt6SlpbFu3Trq16+fqw0RESleVOjvorS0NHJycnj//feJj49n7ty5bNy4kZUrV+Za1s/Pj8TERJtpiYmJuLm5Ua5cOYBcl+QfeughatasyebNm9mwYQOdO3cuuJ0RERG7oEJ/F6WkpNC3b192796NwWDA19cXAE9PTwDc3NzIyMgAIDw8nCNHjvDxxx+TlZVFYmIiU6ZMISIiAjc3t+tuIzIyks8++4yjR4/Stm3bgt8pEREp0lTo76K6desyevRo3njjDYxGI71796ZXr160a9cOgC5dujB16lReeukl7rnnHubNm8fmzZtp0qQJvXr1omnTpowePfqG24iIiODw4cM89thjlCxZ8m7sloiIFGEadX+Htm3bds3pkZGRREZGAvDrr79ap3fp0oUuXbpcc51nn32WZ5991vo5MDCQpUuXXnPZQYMGXXN6uXLlKFOmjC7bi4gIoELvUH7//Xc2bdpEpUqVCAgIKOw4IiJSBKjQO5ABAwYAMGPGjEJOIiIiRYUKvQO5XjdCXlTxdCXbXLSGbvh5uRZ2BBERu6VCLzb6h3nj7Oxc2DFyMZstGAx6wp+ISF4VrVM3KXQ5OTmFHeGaVORFRG6PCr2IiIgDU6EXERFxYCr0IiIiDkyFXmzczYF4ZrPlrm1LRKS40qh7sTF38ykS0wp+QJ6flysDw30KfDsiIsWdCr3YSEk3cTQ1u7BjiIhIPtGlexEREQemQi8iIuLAVOiLgOeff56XXnrJZtratWvx9/dn8uTJNtOnTZtmfSueiIjIzajQFwEtW7YkPj7eZtrWrVsxGo189dVXNtN3795NaGjo3YwnIiJ2TIW+CGjRogUnT57kyJEjAGRlZREXF8err75KUlKSdXpGRgY//fQTzZs35+2336Zdu3YYjUYaN27MuHHjsFiu3K4WFRXFiBEjCAkJoWXLlmRmZhbavomISOHSqPsioGLFitSuXZs9e/ZQo0YNdu7cScWKFQkICCAoKIitW7dSo0YN4uPj8fb2Jj4+nri4OD7++GMqVqxIQkICffr0oXXr1jRu3BiAXbt2sWLFCkqWLImHh0ch76GIiBQWndEXES1atLBevt+yZQutWrUCIDQ0lK1btwJXindISAjdunVj4cKF+Pj4kJqayqVLlyhdujQnTpywtte8eXN8fX0pW7bs3d8ZEREpMlToi4ir/fTZ2dl8/fXXNoX+p59+Ij09nZ07dxIaGsrFixcZPXo0DRs25JlnnmHNmjVYLBbMZrO1vYoVKxbWroiISBGiS/dFRN26dTEYDNaibTQaAfDz86NWrVqsXbuW1NRUGjVqxPPPP0+5cuX49ttvcXd3x2w2ExQUZNOek5Ne6yoiIjqjLzIMBgPNmzdn9uzZhISEYDD8708TGhrKxx9/TJMmTXB3dyczMxN3d3cMBgOZmZlMmjSJzMxMTCZTIe6BiIgURSr0RUiLFi04duxYrtvnWrVqRUpKCiEhIQCMGjWKQ4cO0bBhQx599FEyMzN55JFH+O233wojtoiIFGG6dF+EPPbYYzz22GO5pj/00EP8+uuvNp9jY2Ov286iRYsKJJ+IiNgfndGLiIg4MBV6ERERB6ZL92Kjiqcr2eaC//7n5+Va4NsQEREVevmX/mHeODs735Vtmc0WDAbdBigiUpB06V5s5OTk3LVtqciLiBQ8FXoREREHpkIvIiLiwFToxcbd7J8XEZGCp8F4YmPu5lMkphVsP72flysDw30KdBsiInKFCr3YSEk3cTQ1u7BjiIhIPtGlexEREQemQi8iIuLAVOgLkL+/P/7+/vzxxx+55i1YsAB/f39mzpx5x9sxGo3s27fvjtsRERHHo0JfwDw9PVm9enWu6bGxsXh4eOTLNhISEggMDMyXtkRExLGo0BewiIgI1q5di9lstk778ccfycrKonbt2tZpI0aMYMSIETbr+vv7Ex8fD8DmzZsJDw+nQYMGtGvXjg8++OCay50+fZqXXnqJoKAggoODGTJkCGfPni3IXRQRkSJMhb6AtWzZEpPJxK5du6zTVq5cSZcuXW65jUuXLvHyyy8zevRovvvuOyZPnsyHH37Ijz/+mGvZF198kczMTL788ku2bt3KuXPniImJyZd9ERER+6Pb6wqYi4sLERERrF69mmbNmnHp0iU2b97M559/zo4dO265nRIlSrBy5UrMZjP169fnu+++w2Cw/Z6WnJzM3r17+eKLL/D09ARg4sSJnDlzJj93SURE7IjO6O+CyMhItmzZQmZmJl988QX169fHx+fWHxhTokQJPv30U8xmM8OGDSMoKIjhw4fnuiR/8uRJAPz8/KzTfHx8qFWrVv7siIiI2B0V+rvgwQcf5P7772fTpk3ExsZe87K9wWDAZDJZP58+fdr6e2ZmJqmpqUyePJldu3axfPlyDhw4wOzZs23aqFy5MgApKSnWaYcPH2batGn5vEciImIvVOjvksjISBYuXMiff/5JixYtcs2vUaMG+/bt48SJE1y6dIn3338fJ6crr3E9f/48/fr1Y/369VgsFipWrIjBYLBenr/K19eXpk2bMmnSJM6dO0dmZibvvPMOx44duyv7KCIiRY8K/V3Svn17/vrrLx5//HFcXHIPjejevTtGo5HHH3+cNm3aULlyZapUqQJcKeAzZszgww8/pH79+rRv355GjRrx1FNP5Wrn3XffxcPDg3bt2tGq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",
+      "text/plain": [
+       "<Figure size 511.111x500 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "sns.catplot(y='Genre', data =  df,kind = 'count',\n",
+    "            order = df['Genre'].value_counts().index,\n",
+    "            color = '#4287f5') # blue color\n",
+    "plt.title('Genre column distrubution')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "627902e6-5106-4ed7-972a-ff5d7f9bb3c5",
+   "metadata": {},
+   "source": [
+    "# which has highest votes in vote avg column"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 39,
+   "id": "fe6731bd-9231-42af-9c87-55fe2d77543c",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Mystery</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "2          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "3          2022               The Batman    3827.658        1151      popular   \n",
+       "4          2022               The Batman    3827.658        1151      popular   \n",
+       "\n",
+       "             Genre  \n",
+       "0           Action  \n",
+       "1        Adventure  \n",
+       "2  Science Fiction  \n",
+       "3            Crime  \n",
+       "4          Mystery  "
+      ]
+     },
+     "execution_count": 39,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 41,
+   "id": "5c39e602-0260-4aa1-a9ce-9d6d2a97a788",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAfoAAAH+CAYAAAB0hMxfAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjAsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvlHJYcgAAAAlwSFlzAAAPYQAAD2EBqD+naQAAO4VJREFUeJzt3Xd0VGX+x/FPKkRpxtCLrCKRnkAIvYXeBEIJJKBioTfhByLs6iroAkqHRYrAQlwJJSIgWFi6CUHU0FyKlA2hBgiYCBgyc39/cJg1C2hCEifz8H6dwzmT257v92bXz9zn3sy4WZZlCQAAGMnd2QUAAIDcQ9ADAGAwgh4AAIMR9AAAGIygBwDAYAQ9AAAGI+gBADAYQQ8AgMEIeuAh5Oqfk5VX68+rdeHhRtADD5G0tDT97W9/0/r1651Wg7+/v2bPni1JSkxMlL+/v6KjozO9/7x58/Thhx/mSC2zZ8+Wv79/jhxr1apVmjx5suPn6Oho+fv7KzExMUeODzwogh54iFy8eFFLly5Venq6s0uRJBUrVkxRUVFq2rRppveZMWOGbty4kXtFPaB58+bp6tWrjp+bNm2qqKgoFStWzHlFAZI8nV0AgIeXt7e3AgICnF1GrvD19ZWvr6+zywC4ogdcwV/+8hfVrVv3rivx9957T8HBwUpLS5MkHThwQC+99JLq1KmjmjVrasCAATp27Jik29PkzZs3lyS9/vrrCgkJcRxn79696t27t2rUqKHg4GC99tprunLlimO93W7XzJkzFRISoqpVqyokJETTpk3TrVu3frPuPXv2KCwsTDVq1FDr1q0VExOTYf3/Tt3/3jh3ptnnzJnjeD179my1bNlSc+bMUZ06ddSiRQslJycrJCREY8eOzTDe/abTN2/erNatW6tatWrq3r27YmNjM6w/fPiwhgwZorp166pKlSpq1KiRJk6cqJs3b0qSQkJCdObMGX3yySeO499rrK+//lrh4eGqVauW6tSpo1GjRuncuXMZ6qtcubL27dunsLAwVatWTU2bNtXChQt/8zwDv4WgB1xAp06dlJycnCGALMvSxo0b1aZNG3l7e2v37t3q1auX7Ha73nnnHU2cOFHnzp1Tz549dfz4cRUrVkxz5syRJA0cONDx+ptvvtELL7yg/Pnza8aMGRo3bpz27Nmj5557zhFkCxcu1EcffaTBgwdr8eLF6tWrlxYtWqQPPvjgvjUfOnRIL774ogoUKKCZM2fq+eef18iRI3+zz98bJyoqSpLUrVs3x2tJOnv2rL766itNmzZNI0aM0GOPPZal8ztu3Dg999xzmj17th599FG98sor+vHHHyXdvt0RERGhGzduaNKkSVq4cKHatm2r5cuXa+nSpZJuv/EoWrSomjRpct/p+k8//VQvvviiihcvrmnTpun111/X999/r7CwMF2+fNmxnd1u14gRI9SuXTstWLBAtWrV0vvvv6+dO3dmqSfgDqbuARdQq1YtlSlTRhs3blSjRo0kSd9++63Onj2rTp06SZKmTp2qsmXLatGiRfLw8JAkNWzYUC1bttTs2bM1Y8YMVapUSZJUrlw5Va5c2bHfn/70J82fP9+xX40aNdS+fXutWbNGERER2rNnj6pUqaKuXbtKkoKDg+Xj46MCBQrct+b58+fL19dX8+bNk7e3tySpSJEievXVV++7z++Nc2eav0SJEhmm/NPT0/Xaa6+pfv36mT+pv/Lmm2+qffv2kqR69eqpefPmmjdvnqZOnaqjR4+qUqVKmjlzpqOO+vXrKzY2Vt98840GDBigypUry9vbW76+vve8FWG32/Xee++pfv36mj59umN5zZo11a5dOy1evFijR4+WdPsN3KBBg9S9e3dJt3/3X331lbZt2+b43QNZwRU94ALc3Nz07LPP6quvvnJM02/YsEFly5ZVrVq1dP36dR04cEDt2rVzhLUkFSpUSM2aNVNcXNw9j3vjxg3t27dPTZo0kWVZSk9PV3p6usqWLaunnnpKX3/9tSSpTp06iomJUXh4uJYsWaLjx4+rd+/e6ty5831r/vbbb9WoUSNHyEtSq1atMtT3vx5knDsqVqz4u9vci4eHh1q1auX4OV++fGrcuLHjNkPDhg0VGRmpfPny6eTJk9q6das++OADXblyxfG7+D0nT55UUlKSOnbsmGF5uXLlFBgYeNfvJzAw0PH6zhuI69evP1B/AEEPuIjOnTsrJSVFO3bsUHp6uj7//HM9++yzkqSUlBRZliU/P7+79vPz81NKSso9j/nTTz/Jbrdr4cKFqlKlSoZ/R48e1cWLFyVJL7/8st544w3dvHlTkydPVrt27dSxY8e77mX/2rVr1+56GM3T0/M3p9UfZJxf9/kgihQpIi8vrwzLHn/8cf3000+Sbl+Nv//++woODlabNm301ltv6YcfflC+fPkyPcadp/Ez+/vJnz9/hp/d3d35G308MKbuARfxxBNPKCAgQJs2bZKXl5eSk5MdQV+wYEG5ubnp0qVLd+2XlJSkIkWK3POYjz76qNzc3PTCCy84pq5/zcfHR9LtoImIiFBERIQuX76s7du364MPPtDQoUMVExOT4ar9jiJFitxVj2VZunbt2n17fJBxfovNZsvw872uiu+8SXJzc3Msu3TpkuNNyoIFC7R06VL99a9/VevWrVWwYEFJt58TyKw75/9+v5+sPlMAZAVX9IALefbZZ7Vjxw5t2LBBAQEBKl++vCTpkUceUdWqVbVx48YM4ZaSkqJt27apVq1aknTXtHmBAgVUuXJlnThxQtWqVXP8e/rppzVnzhzHlHLPnj01ceJESbevdkNDQxUREaGUlBSlpqbes9Z69eppx44dGf7mfefOnb/5pH5mxnF3z9x/tgoUKKDz589nWPbdd9/dtV1aWpp2797t+Pnnn3/Wtm3bVKdOHUm3b0FUqFBB3bp1c4T8hQsXdPToUdntdsd+v1XXn/70JxUtWvSuDyo6ffq04uPjVbNmzUz1BDwIgh5wIe3bt9eNGzf02WefOa7m7xg1apT+85//6OWXX9a//vUvff7553r++eeVlpamIUOGSJIjqGJjY7Vv3z5J0siRI7Vr1y6NGjVK27dv15YtW/Tyyy8rJiZGVapUkSTVrl1bH3/8sT744APFxcVp3bp1WrJkiYKDg+/7t+KDBw/W9evX9dJLL2nLli1as2aNxo0bd9c0+a9lZpxChQrp+++/1zfffPOb09nNmjXTN998ow8++EC7d+/WpEmT7nkLwMvLS+PGjdP69eu1detWvfzyy7p586YGDRokSapevbqOHDmiBQsWaM+ePVq1apUiIiKUlpaW4U1MoUKF9MMPP2jPnj2Ov1a4w93dXSNHjlRMTIxeffVVbd++XWvXrlXfvn1VuHBh9e3b9759ANnF1D3gQooUKaImTZpo+/btateuXYZ19erV05IlSzRr1iyNHDlS3t7eCgoK0uTJk/X0009Lun2V27dvX0VFRWnbtm36+uuv1bBhQ3344YeaM2eOhg0bJi8vL1WpUkVLlixxPEE+fPhweXt7a82aNZo7d64KFiyokJAQjRo16r61li9fXpGRkZo0aZJeffVVPf7443rt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vZ+fnwoXLqwjR47kUif/9eSTT2rRokUZvmjiiy++UJUqVVy6rzsKFCggSWrSpIk6duyookWLKjQ01KV7u3z5ssaPH6+pU6fKx8fHsdyVe5Juf9/FoUOHtG3bNjVr1kyNGzfWX/7yF127ds2le9u/f78qVKiglStXqmXLlmrYsKEmT56sokWLunRfzkTQu5iff/45w3+sJDl+vn79ujNKuq+iRYvK0/Pub0K+Vw/58+d31P9b63/++WdJ0iOPPHLX+jvr/iiWZWn69OnaunWrxo8fb0xfkvTll19qx44dcnd317Bhw1y2N7vdrtGjR6tv37565plnMqxz1Z7uuHLliipXrqzWrVtr48aNWrFihU6dOqXRo0e7dG/Xrl3TkSNHdOrUKX3yySdau3atLly4oNdee82l+3Imgt7FPPLII7px40aGZXd+fvTRR51RUpb5+Pg4HvC64+bNm476f2v9nf8T/+85+PX+f4TU1FQNGzZM69evV2RkpPz9/Y3o6478+fOrePHiGj16tHbu3Omyvc2fP1/e3t7q06fPXetctac7/Pz89NFHH6lbt27y8fFRqVKlNHr0aO3YsUOWZblsb97e3pKk8ePHq0CBAvLz89OIESO0fft2l+7LmQh6F/P000/r6tWrunTpkmPZ8ePHVaJECRUsWNCJlWVexYoVdezYsQzLfvzxRz399NOSbvd4v/WFCxdW8eLF9eOPPzrWJSUl6erVq3dN2eWWhIQEde3aVampqVq9erX8/f0luX5f3333ndq0aaO0tDTHsrS0NHl5ealChQou2dunn36qPXv2KCgoSEFBQdqwYYM2bNigoKAgl/99HT58WO+//76sX30BaVpamtzd3VW9enWX7a1ChQqy2+26deuWY5ndbpckVapUyWX7cirnPiKAB9GrVy/r1VdftVJSUhxP3c+aNcvZZf2mXz+Md+XKFSsoKMhasmSJlZaWZsXGxlqBgYFWbGysZVmW40na2NhYx5OztWvXtpKTky3Lsqzp06dbHTp0sBISEhxPzvbu3fsP6ePq1atW06ZNrbFjx1o2my3DOlfuy7IsKzU11WrSpIn17rvvWr/88ouVmJhodevWzXrzzTddvrc7XnvtNcfDeK7e07lz56yAgABrwYIF1q1bt6wzZ85YPXr0sMaNG+fSvaWlpVktW7a0hg4daqWmplqXL1+2nnvuOWvw4MEu3ZczEfQuKCkpyRo6dKgVHBxs1a1b15o0aVKGp8Dzol8HvWVZ1v79+62wsDArMDDQat68ubVmzZoM269du9Zq3bq1FRAQYHXr1s2Kj493rEtLS7Pee+89q1GjRlbNmjWtgQMHWpcuXfpD+li8eLFVsWJFq0aNGlZAQECGf67c1x3Hjh2z+vbtawUFBVnNmjWzpk2bZv3yyy9G9GZZGYPesly/p7i4OEf9devWtSZMmGDdvHnT5Xs7f/68NWLECKtBgwZWUFCQNWbMGOvatWsu35ezuFnWr+Z9AACAUbhHDwCAwQh6AAAMRtADAGAwgh4AAIMR9AAAGIygBwDAYAQ9AKPZbDadPn3a2WUATkPQAzDaq6++qrVr1zq7DMBpCHoARktOTnZ2CYBTEfQA/jCHDh1Snz59FBgYqIYNG2rmzJmyLEt79+5VRESEgoKCFBISohkzZji+XGf27Nl3fftcSEiIoqOjJUl9+vTR1KlTFRERocDAQLVt21YbN26UdPsb0Pbu3av58+drwIABf2yzQB5B0AP4Q1y9elUvvvii6tSpo7i4OP3zn/9UdHS0oqKi1LdvX7Vq1UoxMTFasmSJtmzZoilTpmT62CtXrtT48eMVFxenVq1a6Y033tAvv/yid955R0FBQerfv78++OCDXOwOyLsIegB/iK1btypfvnwaPHiwvL29Va5cOS1ZskT79u2Tv7+/nn/+eXl7e+uJJ57QqFGjtGrVKsfXk/6e1q1bq3LlyvL29laXLl2UkpKiy5cv53JHgGsg6AH8IZKSklSyZEm5ubk5lj355JPy8vJS2bJlM2xbpkwZ3bx5M9NhXbRoUcdrT09PScr0mwTAdAQ9gD9EiRIldO7cOf36CzM3b96s4sWLKyEhIcO2CQkJ8vb2VuHCheXu7q5bt2451tntdl29evWPKhtweQQ9gD9E06ZNlZ6erg8++EBpaWlKSEjQu+++Kz8/Px0/flz/+Mc/HMunTZumjh07ytvbW0899ZSOHDmiY8eOKT09XYsWLdL169czPa63t7dSUlJysTMgbyPoAfwhChUqpA8//FCxsbFq2LCh+vTpo549eyosLEyLFi3SF198ofr16ys8PFwNGjTQG2+8IUlq0aKFOnbsqBdeeEGNGjVScnKyatWqlelxO3furDVr1ig8PDy3WgPyNDfr1/NoAADAKFzRAwBgMIIeAACDEfQAABiMoAcAwGAEPQAABiPoAQAwGEEPAIDBCHoAAAxG0AMAYDCCHgAAgxH0AAAYjKAHAMBg/w/kc/Q4cSQTPwAAAABJRU5ErkJggg==",
+      "text/plain": [
+       "<Figure size 511.111x500 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "sns.catplot(y = 'Vote_Average', data = df, kind = 'count',\n",
+    "            order = df['Vote_Average'].value_counts().index,\n",
+    "            color = '#4287f5')\n",
+    "plt.title('votes distrubation')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "1462ccab-88c7-41de-afe2-32ab15a2121b",
+   "metadata": {},
+   "source": [
+    "# what movie get the highest popularity what's its gnere?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 42,
+   "id": "5abcca3e-eddb-4a1b-9dff-6e2bc55874ac",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>3</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Crime</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>4</th>\n",
+       "      <td>2022</td>\n",
+       "      <td>The Batman</td>\n",
+       "      <td>3827.658</td>\n",
+       "      <td>1151</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Mystery</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "2          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "3          2022               The Batman    3827.658        1151      popular   \n",
+       "4          2022               The Batman    3827.658        1151      popular   \n",
+       "\n",
+       "             Genre  \n",
+       "0           Action  \n",
+       "1        Adventure  \n",
+       "2  Science Fiction  \n",
+       "3            Crime  \n",
+       "4          Mystery  "
+      ]
+     },
+     "execution_count": 42,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df.head()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 43,
+   "id": "88ac79ff-3fb4-44b4-b66e-d8030cf07f03",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>0</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Action</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>1</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Adventure</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>2</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>Spider-Man: No Way Home</td>\n",
+       "      <td>5083.954</td>\n",
+       "      <td>8940</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "   Release_Date                    Title  Popularity  Vote_Count Vote_Average  \\\n",
+       "0          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "1          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "2          2021  Spider-Man: No Way Home    5083.954        8940      popular   \n",
+       "\n",
+       "             Genre  \n",
+       "0           Action  \n",
+       "1        Adventure  \n",
+       "2  Science Fiction  "
+      ]
+     },
+     "execution_count": 43,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[df['Popularity'] == df['Popularity'].max()]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "695df96b-96c0-4c51-ae71-6f2354ca4b7d",
+   "metadata": {},
+   "source": [
+    "# what movie got the lowest popularity? what's its genre?\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 44,
+   "id": "6c803267-50ce-4235-b91b-d40e4840f1db",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/html": [
+       "<div>\n",
+       "<style scoped>\n",
+       "    .dataframe tbody tr th:only-of-type {\n",
+       "        vertical-align: middle;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe tbody tr th {\n",
+       "        vertical-align: top;\n",
+       "    }\n",
+       "\n",
+       "    .dataframe thead th {\n",
+       "        text-align: right;\n",
+       "    }\n",
+       "</style>\n",
+       "<table border=\"1\" class=\"dataframe\">\n",
+       "  <thead>\n",
+       "    <tr style=\"text-align: right;\">\n",
+       "      <th></th>\n",
+       "      <th>Release_Date</th>\n",
+       "      <th>Title</th>\n",
+       "      <th>Popularity</th>\n",
+       "      <th>Vote_Count</th>\n",
+       "      <th>Vote_Average</th>\n",
+       "      <th>Genre</th>\n",
+       "    </tr>\n",
+       "  </thead>\n",
+       "  <tbody>\n",
+       "    <tr>\n",
+       "      <th>25546</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The United States vs. Billie Holiday</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>152</td>\n",
+       "      <td>average</td>\n",
+       "      <td>Music</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25547</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The United States vs. Billie Holiday</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>152</td>\n",
+       "      <td>average</td>\n",
+       "      <td>Drama</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25548</th>\n",
+       "      <td>2021</td>\n",
+       "      <td>The United States vs. Billie Holiday</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>152</td>\n",
+       "      <td>average</td>\n",
+       "      <td>History</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25549</th>\n",
+       "      <td>1984</td>\n",
+       "      <td>Threads</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>186</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>War</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25550</th>\n",
+       "      <td>1984</td>\n",
+       "      <td>Threads</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>186</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Drama</td>\n",
+       "    </tr>\n",
+       "    <tr>\n",
+       "      <th>25551</th>\n",
+       "      <td>1984</td>\n",
+       "      <td>Threads</td>\n",
+       "      <td>13.354</td>\n",
+       "      <td>186</td>\n",
+       "      <td>popular</td>\n",
+       "      <td>Science Fiction</td>\n",
+       "    </tr>\n",
+       "  </tbody>\n",
+       "</table>\n",
+       "</div>"
+      ],
+      "text/plain": [
+       "       Release_Date                                 Title  Popularity  \\\n",
+       "25546          2021  The United States vs. Billie Holiday      13.354   \n",
+       "25547          2021  The United States vs. Billie Holiday      13.354   \n",
+       "25548          2021  The United States vs. Billie Holiday      13.354   \n",
+       "25549          1984                               Threads      13.354   \n",
+       "25550          1984                               Threads      13.354   \n",
+       "25551          1984                               Threads      13.354   \n",
+       "\n",
+       "       Vote_Count Vote_Average            Genre  \n",
+       "25546         152      average            Music  \n",
+       "25547         152      average            Drama  \n",
+       "25548         152      average          History  \n",
+       "25549         186      popular              War  \n",
+       "25550         186      popular            Drama  \n",
+       "25551         186      popular  Science Fiction  "
+      ]
+     },
+     "execution_count": 44,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "df[df['Popularity'] == df['Popularity'].min()]"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "id": "e79d7ae7-db0f-4b0f-a129-77457ff1deca",
+   "metadata": {},
+   "source": [
+    "# which year has the most flimed movies?"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 47,
+   "id": "db9b0bd2-f9aa-4f1c-bb23-f79aabe898db",
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "image/png": "iVBORw0KGgoAAAANSUhEUgAAAjQAAAGvCAYAAABMwk8eAAAAOnRFWHRTb2Z0d2FyZQBNYXRwbG90bGliIHZlcnNpb24zLjEwLjAsIGh0dHBzOi8vbWF0cGxvdGxpYi5vcmcvlHJYcgAAAAlwSFlzAAAPYQAAD2EBqD+naQAAQYZJREFUeJzt3X9clfXh//+nAgaiAoppLa0lP5qKcsREzMwwsqWAQ5zbmKVbWkA/tNAsf6aBOlci/iCnGVu5aaCssSytd6Vmolim1NKB66NsTkEM44coHK7vH3458wjWEY/hJY/77ebtFtfrel28zpPT4cm5rnNOK8MwDAEAAJhY6+ZeAAAAwJWi0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0ABwCt6j89pxrf4srtV14fpAocF1Ydy4cQoMDLT7d8cddygkJERjxozR22+/fdnHnD59usLDw6/Caq+eTZs2KTAwUP/+978vuc/FWd1xxx2yWCyKiYnR66+/LqvVetnft7CwUL/85S+vZOlOZcafnST9+9//VmBgoDZt2iRJ2r17twIDA7V7926H5p87d04LFixQTk6OU9bjzBzT09P16quv2r5etmyZAgMDnXJsQJJcm3sBgLP07NlTc+bMsX1ttVp1/PhxZWRk6Omnn1b79u01ZMiQZlzhtePCrKxWq06fPq1t27YpJSVFn376qZYsWaJWrVo5fLx33nlH+/btu1rLbbF69eqlDRs2yM/Pz6H9i4uLlZGRoQULFlzllV2+1NRUPf7447avx4wZo7vvvrsZV4TrDYUG14127dopODi4wfZ77rlHYWFh2rhxI4Xm/9dYVuHh4frxj3+sBQsWKDw8XFFRUc2zONhc6j59Pejatau6du3a3MvAdYRTTrjutWnTRm5ubg22Z2ZmasSIEerdu7eGDh2qZcuWqba29juP5ciczMxMxcTEKDg4WH369FF0dLQ2b95sG6+rq9PSpUsVHh6u3r17Kzw8XC+//LJqamps+5w9e1a/+93vdM8996h3796KjIy0O0b9cVauXKmhQ4eqb9++SkhI0OnTp5sSkc24ceN04403av369bZt1dXVeumll3T//ferd+/e6tevnyZMmKCvvvpK0vlTB8uXL5ckBQYGatmyZbb1/eEPf1BERIR69+6t4cOH6/XXX//eNVRWVmrBggUaMmSIgoODFRMTow8++MA2brVatW7dOkVGRqpPnz4aOnSofv/73+vs2bOXPGZ4eLimT59ut+3i03PLli3TAw88oPfff18jR45UUFCQoqOjtW/fPn3++ecaM2aM+vTpo5EjR2rXrl224yxbtkwRERH66KOPFBkZabut2dnZ33tbt27dqqioKPXp00c/+9nPdPDgQbvxi085nT17Vi+88IKGDBmi3r1764EHHtDatWslnT9dNWzYMEnSc889ZztVNH36dD388MOaM2eO+vfvr5/97Geqra21+1ldeFsaOw20YcMGDR06VH369NHDDz+sf/zjH3bjeXl5+u1vf6s777zTdp9etmyZ6urqJMl2zOXLl9v+u7HvtXnzZsXExMhiseiuu+7S7Nmz7e7TV5I1rn8UGlw3DMNQbW2t7d/Zs2d15MgRzZw5U5WVlYqOjrbtu2rVKs2aNUthYWF65ZVXFBcXp9WrV2v27NmXPL4jc9atW6fZs2dr2LBhWrVqlRYvXiw3NzdNnTpVx44dkyStXr1a69atU2JiotauXatf/vKXWrNmjV555RXb7UhMTNT69es1YcIEpaeny2KxaMqUKfrrX/9q+16LFy/WihUrNHr0aC1fvlw+Pj566aWXrihDFxcXhYWF6cCBA7aiNm3aNGVlZWnSpElau3atpk+frn/+85+aMmWKDMPQmDFjFBsbK+n8L74xY8ZIkubOnau0tDRFRUXplVde0QMPPKCUlBStWLHikt+/rq5OjzzyiLKzszVp0iSlp6crICBAjz/+uO2X+uzZs5WSkqLw8HClp6crLi5Ob7zxhhISEq74otPjx49rwYIFeuyxx5SamqrTp0/rySef1NNPP62f//znevnll1VXV6cpU6aourraNq+kpETz5s3TQw89pD/84Q+65ZZbNH36dB0+fPiS3+uDDz7Qk08+KX9/fy1fvlw//elPNXXq1O9cX3JysrZt26Znn31Wr776qoYNG6ZFixZp06ZNuvHGG23FMj4+3vbfkrR3714dOXJEy5YtU2JiolxdHX9y/vjx41q2bJkmT56sl19+WadPn9ZDDz2kU6dOSZIOHjyo8ePHy9vbW0uWLFF6err69eun5cuX265d27BhgyQpNjbW9t8XW7lypaZMmaK+ffsqLS1NiYmJ2rJli8aNG3fFWaNl4JQTrht5eXnq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n1G58847JUnffPON3W0oKytTamrqJX9x9+/fXzU1Ndq2bZttm2EYmjFjhtLT0zVgwABJavDGcW+//basVqtCQkIaPW67du10/Phxu22fffbZd2ZxNd1www2yWCzaunWr3TMLF76a62LV1dUaPny47VVNN998s+Li4jRixAjbbXNxcXF4DY5mcuTIER05csT29X//+1/t27dPoaGhkqRPP/1UoaGhuu+++2xl5osvvtCpU6ds93mp4X3kQn379lWbNm0a/Fz37t2rY8eOXfLZSuBCPEOD697zzz+vqKgovfjii8rOzpaPj48eeeQRLV26VBUVFQoNDdWJEye0dOlStWrVSnfccUeDYzgyp3379vrRj36kdevWqWvXrurQoYM+/vhj/fGPf5R0/mJG6fwv+7Vr18rX11cWi0UnTpzQa6+9pgEDBqhjx4665557dOeddyohIUEJCQnq0aOHDhw4oGXLlmnw4MG2v4wTEhKUmpoqDw8PDRw4UNu2bXO40FRUVOjzzz+XdL5offPNN/r444+1YcMGRUVF6f7775d0/rokV1dXLV68WL/5zW907tw5bdq0SR999JGk//1FX/+MzN///nf17dtXAQEBioqK0qxZs/Sf//xHvXv31tdff60lS5bolltuafRZLkkaOnSoLBaLnnvuOT311FO69dZblZOTo3/+85+aNWuW/Pz89LOf/UzLly9XdXW1QkND9dVXX2n58uUKDQ295Bu13XvvvVq1apVeeeUVBQcH66OPPrJ76XVzePrpp/Xwww/r8ccf19ixY/X//t//U3p6+iX3d3d3V69evbR8+XK5ubkpMDBQX3/9tbKzszV8+HBJ55/hks5fh9WjRw/17dv3kscbOnSo3n77bfXp00c//vGPlZ2dbVdc6t1www1KSEjQlClTZLVatXTpUnl7e+vhhx+WJPXp00fvvPOO/vKXv6hHjx46ePCg0tPT1apVK9t9Xjp/H9m3b5/y8vLUv39/u+/h7e2tSZMm2W7bsGHD9O9//1tLly6Vn5+fYmJiHA8WLRaFBte922+/XePGjdPatWv1xhtvaPz48Zo8ebI6d+6sP//5z1qzZo28vLwUFhZme0fhxjgyZ+XKlUpOTtb06dPVpk0b+fn5KT09XSkpKdq7d6/GjRunp556Sm3atNHGjRu1YsUKtW/fXuHh4XrmmWcknf9L9g9/+IOWLl2qVatWqbS0VF26dNH48ePtXj316KOPqm3btvrjH/+oP/7xj7JYLHr22Wc1d+7c783kH//4h8aOHWv7fp06ddKPf/xjLVy40O7CzFtvvVUvvfSSli9frvj4eHl5eSk4OFivv/66xo0bp7179yowMFD333+/3nrrLU2fPl2xsbGaO3euFixYoFWrVmn9+vU6fvy4OnXqpAcffFCTJ0++5DMJLi4uWr16tV566SUtW7ZMVVVVuuOOO7RmzRpZLBZJ509x3Hrrrdq4caNeffVV3XjjjRo3bpwSExMv+SzAo48+qlOnTmnt2rWqqanR0KFDlZycbHulVHPo37+/Vq9erZdfflmPP/64brnlFqWkpOixxx675Jx58+YpNTVVa9euVUlJiTp16qTY2Fg99dRTks4/6zJhwgRt2LBBH330UaMXuNd77rnnVFtbq8WLF8vV1VUPPvignnnmGdur+OoFBgZqxIgRmjt3rsrLyxUWFqbnn3/eVqynT5+umpoapaam6ty5c7rlllsUHx+vwsJCffDBB7JarXJxcdFjjz2mlStXauLEiQ3eU0mSnnjiCfn6+uqNN95QZmamvL299cADD2jy5Ml218wAl9LK4EoqAABgclxDAwAATI9CAwAATI9CAwAATI9CAwAATI9CAwAATI9CAwAATK9FvA9NXV2damtr1bp16yZ/ngkAAPhhGYahuro6ubq6fue7TUtXUGhOnTqlsWPH6sUXX7S9BXa94uJijRo1SklJSXbv8Jidna2VK1eqpKREt99+u2bNmmV7syyr1arf//73euutt3TmzBkNHDhQL7zwgu3D2kpLSzVr1izt2bNHLi4uioqK0rPPPmt7e/nvUltbq/z8/KbeVAAA0IyCgoLUpk2b79ynSYXm008/1fTp03X06NEGY3V1dUpKStI333xjt3337t2aP3++Vq9erT59+mjdunWKj4/Xhx9+KA8PD6Wnp2vnzp3auHGj2rdvr1mzZmnmzJn6wx/+IOn8u7R26dJFO3bs0MmTJxUfH6+MjAw98sgj37ve+lYXFBR0WZ91Us9qtSo/P7/J81sSsnIcWTmOrBxHVo4jK8c1V1b13/f7np2RmlBosrOzlZaWpqlTp2rKlCkNxlesWKGuXbvqpptustuemZmpESNG2D48bvz48dqwYYM2b96s0aNHKzMzU0lJSbZ5M2bM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jmjPnj2aOnWqPDw81K1bNyUkJNiODQAAWjbXy50wePBgRUZGytXV1a7UFBQUKCAgwG5fPz8/ZWVlSZIKCws1evToBuMHDx5UeXm5jh8/bjff19dXXl5eOnTokCTJ29tbXbp0sY336NFDx44d07fffqsOHTo4tHar1Xp5N/aieU2d35KQlePIynFk5Tiycty1nJWLi0tzL6FJnJ3l5RzvsgtN586dG91eWVkpDw8Pu23u7u6qqqr63vHKykpJUtu2bRuM149dPLf+66qqKocLTX5+vkP7Xa35LQlZOY6sHEdWjiMrx11rWXl4eKhnz57NvYwmOXTokO1Skh/aZReaS/Hw8FB5ebndturqanl6etrGq6urG4z7+PjYysnFIdTPNwyjwVj91/XHd0RQUFCTWq/ValV+fn6T57ckZOU4snIcWTmOrBxHVs4XGBjo1OPV/4wc4bRCExAQoJ07d9ptKywslL+/vyTJ399fBQUFDcaHDBkiLy8vdenSRYWFhbbTTiUlJSorK1NAQIDq6upUVlamkydPytfXV5J0+PBhde3aVe3bt3d4jS4uLld0p73S+S0JWTmOrBxHVo4jK8eRlfM0Z45Oex+aiIgInTx5UhkZGaqpqVFubq5ycnJs183ExsYqJydHubm5qqmpUUZGhkpLSxURESFJiomJUXp6uoqKilRRUaGUlBQNGDBA3bt312233aaQkBClpKSooqJCRUVFWrlypWJjY521fAAAYGJOe4bGx8dHa9euVXJystLS0tSxY0fNnDlTAwcOlCSFhYVpzpw5mjt3rk6cOCE/Pz+tXr1a3t7ekqTExETV1tYqLi5OlZWVCg0NVWpqqu34aWlpmjdvnoYNG6bWrVtr1KhRSkhIcNbyAQCAiV1Roal/BVK9oKAgrV+//pL7R0dHKzo6utExNzc3JSUlKSkpqdFxX19fpaWlNX2xAADgusVHHwAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj0AAAANOj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sSO4wBYArj7TFJqCggJ5e3urS5cutm09evTQsWPH9O2336pDhw6XnGsY55/2P3fuXJOe3rdarVc0vyWpq6uTu7u7ampqbLk5i4uLi1b832EdO33Gqce9Wvrc4qXYkG76SVdP3WCSu81tnTxktVpZ8w/AjOtmzT8MM6759s6eslqtTn/crz9e/e/x79LKcGSva8Bbb72lJUuW6KOPPrJtO3r0qCIiIrRt2zZ17dr1knPPnTun/Pz8H2CVAADA2YKCgtSmTZvv3Mc0z9C0bdtWZ87Y/2Ve/7Wn53c/Te7q6qqgoCC1bt1arVqZ75QFAAAtkWEYqqurk6vr99cV0xQaf39/lZWV6eTJk/L19ZUkHT58WF27dlX79u2/c27r1q2/t9kBAADzMs3Ltm+77TaFhIQoJSVFFRUVKioq0sqVKxUbG9vcSwMAAM3MNNfQSNLJkyc1b9487d69W61bt9aoUaOUlJTEhboAALRwpio0AAAAjTHNKScAAIBLodAAAADTo9AAAADTo9AAAADTo9AAAADTa7GF5tSpU4qIiNDu3btt27Zt26ZRo0bJYrEoKipK7733nt2c7OxsRUREKDg4WDExMdq3b59tzGq1atGiRRo0aJAsFovi4+NVXFz8g92eq+lyszIMQytWrFB4eLj69eunyMhIvfvuu7Zxsnqv0bk7d+7UT37yE/373/+2bSMr+6y2bNmikSNHKjg4WBEREcrKyrKNkdX/sqqrq9OSJUs0ZMgQhYSE6Oc//7n27NljG78eszp48KAmTJigAQMG6K677tK0adN06tQpSdL+/fs1ZswYWSwWhYeHKzMz025uS3tsb2pW1/xju9EC7d2717jvvvuMgIAAIzc31zAMw/jiiy+MXr16GW+++aZRU1Nj5OXlGRaLxTaem5trWCwWY+/evca5c+eM1157zQgNDTWqqqoMwzCMZcuWGZGRkcaxY8eM8vJyY/LkycbEiROb7TY6S1Oyeu2114zw8HCjsLDQqKurM/7v//7PCAoKMvbv328YBlldmFW94uJi46677jICAgKMoqIi23ay+l9Wu3btMoKDg42PPvrIqKurM3bt2mX07t2b+1UjWa1bt8548MEHjePHjxtWq9V47bXXjODgYKO6utowjOsvqzNnzhh33XWXsXTpUuPs2bPGqVOnjIkTJxqPPvqoUVZWZgwYMMB44403jJqaGuOTTz4xLBaL7X7T0h7brySra/2xvcUVmk2bNhlDhw413n77bbsHiMWLFxvjxo2z23f27NnGU089ZRiGYTzzzDPGzJkz7cYfeOABIysryzAMwxgyZIjxt7/9zTZWUlJiBAYGGkePHr2Kt+bqampWS5cuNTZu3Gg3PmrUKOO1114zDIOsLszKMAzDarUaDz30kJGamtqg0JDV/7J69NFHjZdfftlu/NChQ8Y333xjGAZZXZjV/PnzjQceeMA4duyYUVtba2RkZBgDBw60FZrrLavDhw8bv/3tb43a2lrbtvfff9/o16+f8eabbxr333+/3f6zZ882pk2bZhhGy3tsv5KsrvXH9hZ3ymnw4MF677339OCDD9ptt1qtatu2rd221q1b61//+pckqbCwUAEBAXbjfn5+OnjwoMrLy3X8+HG7cV9fX3l5eenQoUNX6ZZcfU3N6sknn1RMTIxt7PDhwyooKFCvXr3ISvZZSdLKlSvVqVMnjR492m4/srLP6sCBA/L29takSZMUGhqq6OhoHT16VN7e3mQl+6x+8YtfqLq6WkOHDlVQUJBSU1OVlpamG2644brM6vbbb9eaNWvs3jV+y5Yt6tWrlwoKCi752C21vMf2K8nqWn9sb3GFpnPnzo1+amdERIQ+/vhjbdmyRbW1tfr000+1efNmnT17VpJUWVkpDw8Puznu7u6qqqpSZWWlJDV4gHF3d7eNmVFTs7rQ119/rYkTJyoqKkp33nknWV2U1Z49e/S3v/1N8+bNazCXrOyzOn36tF599VXFx8dr586dSkxM1JQpU7R//36yuiirmpoaDRgwQO+8844+++wzPfLII3ryySdVUlJy3WZVzzAMLVmyRB9++KFmzJjxnY/dUst8bK93uVld6Fp8bG9xheZS+vXrp9/97ndavny57rrrLr366quKiYlRhw4dJEkeHh6qrq62m1NdXS1PT0/bHeDMmTONjl9vvi+reh988IHGjh2r+++/X8nJyZJEVhdkderUKU2fPl2LFy9Wu3btGswlK/v7VZs2bTR69GhZLBa5urrq/vvvV1hYmLZs2UJWF2U1bdo0DRkyRLfffrvc3d2VmJio9u3b6913372us6qoqNCTTz6pnJwcvfHGGwoMDPzOx26p5T62NyWretfqY3vD6t9ClZWVyd/fXzk5ObZtkydPVu/evSVJ/v7+KigosJtTWFioIUOGyMvLS126dLF76rKkpERlZWUNnr67HnxfVpK0YsUKrVmzRvPmzVNkZKRtO1n9L6sdO3aotLRUv/3tbyWdf2WKJEVFRemxxx7TpEmTyOqC+1WPHj107tw5uzlWq1WGYXC/kn1Wx44da5CVq6ur3Nzcrtusjh49qokTJ+rmm29WVlaWOnbsKEkKCAjQzp077fYtLCyUv7+/pJb52N7UrKRr/LH9B7lS5xp14UV2n3/+uREcHGx89dVXRk1NjfH2228bffr0Mf75z38ahmHYrvbetWuX7Ur4O++803ZB4pIlS4yRI0caR48etV3d/etf/7q5bprTXU5Wa9euNUJCQowvv/yy0WOR1f+yulBRUVGDi4LJ6n9ZZWVlGX379jV27txpWK1W49133zV69eplfPHFF4ZhkNWFWSUlJRkRERHG0aNHjXPnzhkZGRlG//79jePHjxuGcf1lVVZWZgwdOtSYPn26YbVa7cZOnTpl9O/f33jttdeMc+fOGbt27bI9lhtGy3tsv5KsrvXHdgrNBS+f/fOf/2zce++9RnBwsBETE2N88skndvv/9a9/NYYPH24EBwcbsbGxxueff24bO3funLF48WLj7rvvNvr162fEx8cbJ0+e/MFuy9XmaFZ1dXVGSEiI0bNnTyM4ONjuX3p6umEYZHXx/apeY4WGrOyz2rRpkzFy5EgjODjYGDFihLF161bbGFn9L6uKigpj/vz5xt13323079/fiIuLs7201jCuv6zWrl1rBAQEGH379m3wuGMYhnHgwAFj7NixhsViMYYNG9bglTot6bG9qVmZ4bG9lWEYxg/zXBAAAMDVwUXBAADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9Cg0AADA9P4/V9s/KJ0xGWMAAAAASUVORK5CYII=",
+      "text/plain": [
+       "<Figure size 640x480 with 1 Axes>"
+      ]
+     },
+     "metadata": {},
+     "output_type": "display_data"
+    }
+   ],
+   "source": [
+    "df['Release_Date'].hist()\n",
+    "plt.title('Released Date column distrubation')\n",
+    "plt.show()"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d824cc98-9fac-484c-94a3-90712ada18ae",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "ca7648c7-aa93-4787-890a-d08957dc3d52",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5a967e1a-0b62-441c-aef5-088332bf3367",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "2209cbd5-77cd-4b8e-949f-12aa3d51b5ae",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "d4e0256a-25a2-4761-9b2b-a4462565086f",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
